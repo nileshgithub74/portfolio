@@ -112,13 +112,13 @@ const Projects = () => {
               style={{ perspective: "1000px" }}
             >
               <motion.div
-                className="relative w-full h-full bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg transition-all duration-500"
+                className="relative w-full h-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl transition-all duration-500 border border-gray-200/20 dark:border-gray-700/20"
                 style={{ transformStyle: "preserve-3d" }}
                 whileHover={{ 
-                  rotateY: 10,
-                  rotateX: -5,
-                  scale: 1.05,
-                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+                  rotateY: 5,
+                  rotateX: -2,
+                  scale: 1.02,
+                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 20px rgba(99, 102, 241, 0.1)"
                 }}
                 transition={{ 
                   type: "spring", 
@@ -126,9 +126,12 @@ const Projects = () => {
                   damping: 20
                 }}
               >
+                {/* Glowing Border Effect */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
+                
                 {/* Card Front */}
                 <div className="relative h-full">
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-40 overflow-hidden">
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -138,33 +141,42 @@ const Projects = () => {
                       priority={index < 3}
                     />
                     <motion.div 
-                      className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+                      className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
                     />
+                    
+                    {/* Image Overlay Pattern */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500" 
+                         style={{ 
+                           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                           backgroundSize: '30px 30px'
+                         }}
+                    />
                   </div>
                   
-                  <div className="p-6">
+                  <div className="p-5">
                     <motion.h3 
-                      className="text-2xl font-bold text-gray-800 dark:text-white mb-2"
+                      className="text-xl font-bold text-gray-800 dark:text-white mb-2 bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent"
                       whileHover={{ y: -5 }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
                       {project.title}
                     </motion.h3>
-                    <p className="text-gray-700 dark:text-gray-300 mb-4">{project.description}</p>
+                    <p className="text-gray-700 dark:text-gray-300 mb-3 leading-relaxed text-sm">{project.description}</p>
                     
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.map((tag, tagIndex) => (
                         <motion.span
                           key={tagIndex}
-                          className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm"
+                          className="px-2 py-1 bg-gray-100/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium backdrop-blur-sm border border-gray-200/20 dark:border-gray-600/20"
                           whileHover={{ 
-                            scale: 1.1, 
-                            y: -3,
-                            backgroundColor: "rgba(99, 102, 241, 0.2)",
-                            color: "rgb(99, 102, 241)"
+                            scale: 1.05, 
+                            y: -2,
+                            backgroundColor: "rgba(99, 102, 241, 0.15)",
+                            color: "rgb(99, 102, 241)",
+                            borderColor: "rgba(99, 102, 241, 0.3)"
                           }}
                           transition={{ type: "spring", stiffness: 500 }}
                         >
@@ -173,14 +185,14 @@ const Projects = () => {
                       ))}
                     </div>
                     
-                    <div className="flex gap-4">
+                    <div className="flex gap-3">
                       <Link
                         href={project.link}
-                        className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+                        className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-indigo-600 dark:text-indigo-400 hover:from-indigo-600/30 hover:to-purple-600/30 dark:hover:from-indigo-400/30 dark:hover:to-purple-400/30 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md text-sm"
                       >
                         View Project
                         <svg
-                          className="w-4 h-4 ml-2"
+                          className="w-3 h-3 ml-1.5"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -198,9 +210,12 @@ const Projects = () => {
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                          className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-gray-100/80 to-gray-200/80 dark:from-gray-700/80 dark:to-gray-600/80 text-gray-700 dark:text-gray-300 hover:from-gray-200/80 hover:to-gray-300/80 dark:hover:from-gray-600/80 dark:hover:to-gray-500/80 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md text-sm"
                         >
                           GitHub
+                          <svg className="w-3 h-3 ml-1.5" fill="currentColor" viewBox="0 0 24 24">
+                            <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                          </svg>
                         </Link>
                       )}
                       {project.demo && (
@@ -208,9 +223,13 @@ const Projects = () => {
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                          className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-gray-100/80 to-gray-200/80 dark:from-gray-700/80 dark:to-gray-600/80 text-gray-700 dark:text-gray-300 hover:from-gray-200/80 hover:to-gray-300/80 dark:hover:from-gray-600/80 dark:hover:to-gray-500/80 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md text-sm"
                         >
                           Live Demo
+                          <svg className="w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
                         </Link>
                       )}
                     </div>
