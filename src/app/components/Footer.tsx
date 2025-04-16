@@ -13,30 +13,28 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300 py-12">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-6 md:mb-0">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
             <p className="text-sm">
               © {currentYear} Nilesh Kumar. All rights reserved.
             </p>
           </div>
 
-          <div className="flex space-x-6">
+          <div className="flex items-center gap-6">
             {socialLinks.map((link, index) => (
               <a
                 key={index}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors duration-300 hover:scale-110 transform"
                 aria-label={link.label}
               >
-                {link.icon}
+                <span className="text-xl">{link.icon}</span>
               </a>
             ))}
           </div>
         </div>
-
-        
       </div>
     </footer>
   );
