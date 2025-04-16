@@ -95,7 +95,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-20">
-            <Link href="/" className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 dark:hover:from-indigo-300 dark:hover:via-purple-300 dark:hover:to-pink-300 transition-all duration-300">
+            <Link href="/" className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 dark:hover:from-indigo-300 dark:hover:via-purple-300 dark:hover:to-pink-300 transition-all duration-300">
               Nilesh
             </Link>
 
@@ -103,7 +103,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="hidden md:flex items-center space-x-8">
               <Link
                 href="/#hero"
-                className={`relative text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 ${
+                className={`relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 ${
                   pathname === '/' ? 'text-indigo-500 dark:text-indigo-300' : ''
                 }`}
                 scroll={true}
@@ -115,7 +115,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </Link>
               <Link
                 href="/#about"
-                className="relative text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
+                className="relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
                 scroll={true}
               >
                 About
@@ -123,7 +123,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </Link>
               <Link
                 href="/#projects"
-                className="relative text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
+                className="relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
                 scroll={true}
               >
                 Projects
@@ -131,7 +131,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </Link>
               <Link
                 href="/#contact"
-                className="relative text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
+                className="relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
                 scroll={true}
               >
                 Contact
@@ -177,7 +177,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           >
             <Link
               href="/#hero"
-              className={`block text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 ${
+              className={`block text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 ${
                 pathname === '/' ? 'text-indigo-500 dark:text-indigo-300' : ''
               }`}
               onClick={() => setIsMenuOpen(false)}
@@ -187,7 +187,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </Link>
             <Link
               href="/#about"
-              className="block text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300"
+              className="block text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300"
               onClick={() => setIsMenuOpen(false)}
               scroll={true}
             >
@@ -195,7 +195,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </Link>
             <Link
               href="/#projects"
-              className="block text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300"
+              className="block text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300"
               onClick={() => setIsMenuOpen(false)}
               scroll={true}
             >
@@ -203,7 +203,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </Link>
             <Link
               href="/#contact"
-              className="block text-lg font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300"
+              className="block text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300"
               onClick={() => setIsMenuOpen(false)}
               scroll={true}
             >
