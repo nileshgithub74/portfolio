@@ -115,7 +115,7 @@ const Contact = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
-            Let's discuss your project and how I can help you achieve your goals
+            Let&apos;s discuss your project and how I can help you achieve your goals
           </p>
         </motion.div>
 
@@ -240,7 +240,7 @@ const Contact = () => {
                 )}
                 {formStatus.success && (
                   <div className="p-4 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-lg">
-                    Message sent successfully! I'll get back to you soon.
+                    Message sent successfully! I&apos;ll get back to you soon.
                   </div>
                 )}
 

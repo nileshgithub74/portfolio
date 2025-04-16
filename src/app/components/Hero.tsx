@@ -68,7 +68,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
             >
               I build exceptional digital experiences with modern technologies.
-              Let's create something amazing together.
+              Let&apos;s create something amazing together.
             </motion.p>
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center"

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { FaCertificate, FaAward, FaGraduationCap, FaLaptopCode, FaCode, FaJava, FaRobot } from 'react-icons/fa';
+import { FaLaptopCode, FaCode, FaJava, FaRobot } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
