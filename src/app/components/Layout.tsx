@@ -93,9 +93,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
-            <Link href="/" className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 dark:hover:from-indigo-300 dark:hover:via-purple-300 dark:hover:to-pink-300 transition-all duration-300">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            <Link href="/" className="text-lg sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 dark:hover:from-indigo-300 dark:hover:via-purple-300 dark:hover:to-pink-300 transition-all duration-300">
               Nilesh
             </Link>
 
@@ -141,11 +141,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden text-gray-600 dark:text-gray-300 focus:outline-none hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300"
+              className="md:hidden text-gray-600 dark:text-gray-300 focus:outline-none hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 p-2"
               onClick={toggleMenu}
+              aria-label="Toggle menu"
             >
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5 sm:w-6 sm:h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -173,12 +174,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div
             className={`md:hidden ${
               isMenuOpen ? 'block' : 'hidden'
-            } py-4 space-y-4`}
+            } py-3 space-y-2 border-t border-gray-200 dark:border-gray-800`}
           >
             <Link
               href="/#hero"
               className={`block text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 ${
-                pathname === '/' ? 'text-indigo-500 dark:text-indigo-300' : ''
+                pathname === '/' ? 'text-indigo-500 dark:text-indigo-300 bg-gray-100 dark:bg-gray-800/50 rounded-lg' : ''
               }`}
               onClick={() => setIsMenuOpen(false)}
               scroll={true}

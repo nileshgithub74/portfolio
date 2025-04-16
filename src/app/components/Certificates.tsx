@@ -13,7 +13,7 @@ const certificates = [
     date: '2024',
     description: 'Explore the Node.js environment , test and debug the basic programs incorporating Node.js techniques like modules, files and asynchronous programming.',
     link: 'https://www.coursera.org/account/accomplishments/certificate/TNK6P8VWSUMM',
-    icon: <FaCode className="text-2xl" />,
+    icon: <FaCode className="text-xl" />,
   },
   {
     title: 'HTML, CSS, and Javascript for Web Developers',
@@ -21,7 +21,7 @@ const certificates = [
     date: '2024',
     description: ' Frameworks  for Web Development.',
     link: 'https://www.coursera.org/account/accomplishments/certificate/LRHRJ2SNNFD6',
-    icon: <FaLaptopCode className="text-2xl" />,
+    icon: <FaLaptopCode className="text-xl" />,
   },
   {
     title: 'Build AI Apps with ChatGPT, Dall-E, and GPT-4',
@@ -29,7 +29,7 @@ const certificates = [
     date: '2024',
     description: 'How to build apps with the OpenAI API',
     link: 'https://www.coursera.org/account/accomplishments/certificate/UGRQWHLRY58D',
-    icon: <FaRobot className="text-2xl" />,
+    icon: <FaRobot className="text-xl" />,
   },
   {
     title: 'Data Structure And Algorithm.',
@@ -37,7 +37,7 @@ const certificates = [
     date: '2022',
     description: 'master data structure and alogrithm',
     link: 'https://media.geeksforgeeks.org/courses/certificates/6e7bc1c14b337de2af1c0f4a49a5ef4f.pdf',
-    icon: <FaCode className="text-2xl" />,
+    icon: <FaCode className="text-xl" />,
   },
   {
     title: ' Learn JAVA Programming - Beginner to Master',
@@ -45,7 +45,7 @@ const certificates = [
     date: '2023',
     description: ' Learn jAVA programming - Beginner to Master',
     link: ' https://www.udemy.com/certificate/UC-174a9d37-08aa-42bf-825a-0005e06b42b5/',
-    icon: <FaJava className="text-2xl" />,
+    icon: <FaJava className="text-xl" />,
   },
   {
     title: 'ChatGPT Playground for Beginners: Intro to NLP AI',
@@ -53,7 +53,7 @@ const certificates = [
     date: '2023',
     description: 'Work with the fundamental operations of ChatGPT, tokens, models, parameters, and influence the generated responses.',
     link: 'https://www.coursera.org/account/accomplishments/certificate/DNAMC4RKBDDG',
-    icon: <FaRobot className="text-2xl" />,
+    icon: <FaRobot className="text-xl" />,
   },
 ];
 
