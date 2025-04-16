@@ -1,5 +1,21 @@
 import { NextResponse } from 'next/server';
 
+// Define interfaces for GitHub API responses
+interface GitHubRepo {
+  name: string;
+  description: string | null;
+  stargazers_count: number;
+  topics: string[];
+  language: string | null;
+}
+
+interface GitHubEvent {
+  type: string;
+  repo: {
+    name: string;
+  };
+}
+
 const GITHUB_USERNAME = process.env.GITHUB_USERNAME || 'nileshgithub74';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
@@ -38,16 +54,16 @@ export async function GET() {
     // Fetch user repositories
     const repos = await fetchWithTimeout(
       `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`
-    );
+    ) as GitHubRepo[];
 
     // Fetch user events
     const events = await fetchWithTimeout(
       `https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`
-    );
+    ) as GitHubEvent[];
 
     // Calculate total stats
-    const totalStars = repos.reduce((acc: number, repo: any) => acc + repo.stargazers_count, 0);
-    const totalContributions = events.filter((event: any) => 
+    const totalStars = repos.reduce((acc: number, repo: GitHubRepo) => acc + repo.stargazers_count, 0);
+    const totalContributions = events.filter((event: GitHubEvent) => 
       ['PushEvent', 'PullRequestEvent', 'IssuesEvent'].includes(event.type)
     ).length;
 

@@ -1,11 +1,52 @@
 'use client';
 
 import Link from 'next/link';
-import { FaDownload } from 'react-icons/fa';
+import { FaDownload, FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaCheck } from 'react-icons/fa';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+
+const socialLinks = [
+  { 
+    icon: <FaGithub className="text-xl" />, 
+    href: 'https://github.com/nileshgithub74', 
+    label: 'GitHub',
+    color: 'hover:text-gray-800 dark:hover:text-gray-100',
+    isEmail: false
+  },
+  { 
+    icon: <FaLinkedin className="text-xl" />, 
+    href: 'https://linkedin.com/in/nilesh-kumar-74w', 
+    label: 'LinkedIn',
+    color: 'hover:text-blue-600 dark:hover:text-blue-400',
+    isEmail: false
+  },
+  { 
+    icon: <FaTwitter className="text-xl" />, 
+    href: 'https://x.com/nileshkumar74', 
+    label: 'Twitter',
+    color: 'hover:text-blue-400 dark:hover:text-blue-300',
+    isEmail: false
+  },
+  { 
+    icon: <FaEnvelope className="text-xl" />, 
+    href: 'kumarnilesh843127@gmail.com', 
+    label: 'Email',
+    color: 'hover:text-red-500 dark:hover:text-red-400',
+    isEmail: true
+  },
+];
 
 const Hero = () => {
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleEmailClick = (e: React.MouseEvent, email: string) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(email);
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  };
+
   return (
     <section id="hero" className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
@@ -70,6 +111,45 @@ const Hero = () => {
               I build exceptional digital experiences with modern technologies.
               Let&apos;s create something amazing together.
             </motion.p>
+
+            {/* Social Links */}
+            <motion.div 
+              className="flex flex-wrap justify-center gap-4 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+            >
+              {socialLinks.map((link, index) => (
+                <motion.a
+                  key={index}
+                  href={link.isEmail ? '#' : link.href}
+                  target={link.isEmail ? undefined : "_blank"}
+                  rel={link.isEmail ? undefined : "noopener noreferrer"}
+                  className={`text-gray-600 dark:text-gray-400 ${link.color} transition-colors duration-300 relative flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
+                  onClick={link.isEmail ? (e) => handleEmailClick(e, link.href) : undefined}
+                >
+                  {link.icon}
+                  <span className="text-sm font-medium">{link.label}</span>
+                  {link.isEmail && emailCopied && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs py-1 px-2 rounded-md whitespace-nowrap flex items-center gap-1"
+                    >
+                      <FaCheck className="text-xs" />
+                      <span>Copied!</span>
+                    </motion.div>
+                  )}
+                </motion.a>
+              ))}
+            </motion.div>
+
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center"
               initial={{ opacity: 0, y: 20 }}
