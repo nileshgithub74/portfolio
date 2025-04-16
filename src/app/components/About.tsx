@@ -5,6 +5,22 @@ import Image from 'next/image';
 import { FaCode, FaServer, FaDatabase, FaLaptopCode, FaTools, FaRocket, FaGithub, FaStar, FaCodeBranch } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
+// Add interfaces for GitHub API responses
+interface GitHubRepo {
+  name: string;
+  description: string | null;
+  stargazers_count: number;
+  topics: string[];
+  language: string | null;
+}
+
+interface GitHubEvent {
+  type: string;
+  repo: {
+    name: string;
+  };
+}
+
 interface Skill {
   icon: React.ReactNode;
   title: string;
@@ -83,12 +99,11 @@ const About = () => {
 
         // Fetch user's starred repositories
         const starsResponse = await fetch('https://api.github.com/users/nileshgithub74/starred?per_page=100');
-        const starredRepos = await starsResponse.json();
+        await starsResponse.json();
 
         // Calculate total stats
-        const totalStars = repos.reduce((acc: number, repo: any) => acc + repo.stargazers_count, 0);
-        const totalCommits = events.filter((event: any) => event.type === 'PushEvent').length;
-        const totalContributions = events.filter((event: any) => 
+        const totalStars = repos.reduce((acc: number, repo: { stargazers_count: number }) => acc + repo.stargazers_count, 0);
+        const totalContributions = events.filter((event: { type: string }) => 
           ['PushEvent', 'PullRequestEvent', 'IssuesEvent'].includes(event.type)
         ).length;
 
@@ -104,7 +119,7 @@ const About = () => {
           let skillStats = { repos: 0, stars: 0, commits: 0 };
           
           // Count repositories and commits for each skill
-          const relevantRepos = repos.filter((repo: any) => {
+          const relevantRepos = repos.filter((repo: GitHubRepo) => {
             const repoName = repo.name.toLowerCase();
             const repoDescription = (repo.description || '').toLowerCase();
             const repoTopics = (repo.topics || []).map((t: string) => t.toLowerCase());
@@ -198,13 +213,13 @@ const About = () => {
           });
 
           // Calculate stats for this skill
-          const skillCommits = events.filter((event: any) => 
-            relevantRepos.some((repo: any) => repo.name === event.repo.name)
+          const skillCommits = events.filter((event: GitHubEvent) => 
+            relevantRepos.some((repo: GitHubRepo) => repo.name === event.repo.name)
           ).length;
 
           skillStats = {
             repos: relevantRepos.length,
-            stars: relevantRepos.reduce((acc: number, repo: any) => acc + repo.stargazers_count, 0),
+            stars: relevantRepos.reduce((acc: number, repo: GitHubRepo) => acc + repo.stargazers_count, 0),
             commits: skillCommits
           };
 
@@ -228,21 +243,17 @@ const About = () => {
 
         setSkills(updatedSkills);
       } catch (error) {
-        console.error('Error fetching GitHub data:', error);
-        // Fallback to default levels if API fails
-        setSkills([
-          { ...skills[0], level: 85, stats: { repos: 5, stars: 10, commits: 50 } },
-          { ...skills[1], level: 80, stats: { repos: 4, stars: 8, commits: 40 } },
-          { ...skills[2], level: 75, stats: { repos: 3, stars: 5, commits: 30 } },
-          { ...skills[3], level: 80, stats: { repos: 4, stars: 7, commits: 35 } },
-          { ...skills[4], level: 75, stats: { repos: 3, stars: 5, commits: 25 } },
-          { ...skills[5], level: 80, stats: { repos: 4, stars: 6, commits: 30 } }
-        ]);
+        console.error('Error fetching GitHub stats:', error);
+        setGithubStats({
+          totalRepos: 0,
+          totalStars: 0,
+          totalCommits: 0
+        });
       }
     };
 
     fetchGitHubStats();
-  }, []);
+  }, [skills]);
 
   const displayedSkills = showAll ? skills : skills.slice(0, 4);
 
@@ -469,7 +480,7 @@ const About = () => {
           >
             <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Who Am I?</h3>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-              I'm a passionate Full Stack Developer with a strong focus on creating modern, user-friendly web applications. 
+              I&apos;m a passionate Full Stack Developer with a strong focus on creating modern, user-friendly web applications. 
               With expertise in both frontend and backend technologies, I bring ideas to life through clean, efficient code.
             </p>
             <p className="text-lg text-gray-700 dark:text-gray-300">
