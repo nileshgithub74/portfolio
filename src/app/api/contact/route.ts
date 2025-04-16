@@ -35,24 +35,40 @@ export async function POST(req: Request) {
 
     // Create a transporter using SMTP
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     });
+
+    // Verify SMTP connection
+    await transporter.verify();
 
     // Email content
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: 'nileshsreyansh62@gmail.com', // Your email address
+      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER, // Send to yourself
+      replyTo: email, // Allow direct reply to the sender
       subject: `New Contact Form Message from ${name}`,
       html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333;">New Contact Form Submission</h2>
+          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px;">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Message:</strong></p>
+            <p style="white-space: pre-wrap;">${message}</p>
+          </div>
+          <p style="color: #666; font-size: 12px; margin-top: 20px;">
+            This message was sent from your portfolio website's contact form.
+          </p>
+        </div>
       `,
     };
 
@@ -69,7 +85,13 @@ export async function POST(req: Request) {
     // Provide more specific error messages
     let errorMessage = 'Failed to send email';
     if (error instanceof Error) {
-      errorMessage = error.message;
+      if (error.message.includes('Invalid login')) {
+        errorMessage = 'Email configuration error. Please check your email credentials.';
+      } else if (error.message.includes('ECONNREFUSED')) {
+        errorMessage = 'Could not connect to email server. Please try again later.';
+      } else {
+        errorMessage = error.message;
+      }
     }
     
     return NextResponse.json(

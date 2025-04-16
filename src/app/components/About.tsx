@@ -91,64 +91,20 @@ const About = () => {
       try {
         console.log('Starting GitHub data fetch...');
         
-        // Helper function to fetch with timeout and retry
-        const fetchWithTimeout = async (url: string, retries = 2, timeout = 5000) => {
-          for (let i = 0; i <= retries; i++) {
-            try {
-              const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), timeout);
-              
-              const response = await fetch(url, { 
-                signal: controller.signal,
-                headers: {
-                  'Accept': 'application/vnd.github.v3+json',
-                  'User-Agent': 'Portfolio-App'
-                }
-              });
-              
-              clearTimeout(timeoutId);
-              
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-              
-              return await response.json();
-            } catch (error) {
-              console.error(`Attempt ${i + 1} failed for ${url}:`, error);
-              if (i === retries) throw error;
-              // Wait before retrying (exponential backoff)
-              await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
-            }
-          }
-        };
+        // Fetch data from our API route
+        const response = await fetch('/api/github');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('GitHub data fetched successfully:', data);
 
-        // Fetch user repositories with topics
-        console.log('Fetching repositories...');
-        const repos = await fetchWithTimeout('https://api.github.com/users/nileshgithub74/repos?per_page=100');
-        console.log(`Fetched ${repos.length} repositories`);
-
-        // Fetch user events for commit count
-        console.log('Fetching events...');
-        const events = await fetchWithTimeout('https://api.github.com/users/nileshgithub74/events?per_page=100');
-        console.log(`Fetched ${events.length} events`);
-
-        // Fetch user's starred repositories
-        console.log('Fetching starred repositories...');
-        await fetchWithTimeout('https://api.github.com/users/nileshgithub74/starred?per_page=100');
-        console.log('Fetched starred repositories');
-
-        // Calculate total stats
-        const totalStars = repos.reduce((acc: number, repo: GitHubRepo) => acc + repo.stargazers_count, 0);
-        const totalContributions = events.filter((event: GitHubEvent) => 
-          ['PushEvent', 'PullRequestEvent', 'IssuesEvent'].includes(event.type)
-        ).length;
-
-        console.log(`Calculated stats: ${repos.length} repos, ${totalStars} stars, ${totalContributions} contributions`);
-
+        // Update GitHub stats
         setGithubStats({
-          totalRepos: repos.length,
-          totalStars,
-          totalCommits: totalContributions
+          totalRepos: data.totalRepos,
+          totalStars: data.totalStars,
+          totalCommits: data.totalCommits
         });
 
         // Calculate skill levels based on repository data
@@ -157,7 +113,7 @@ const About = () => {
           let skillStats = { repos: 0, stars: 0, commits: 0 };
           
           // Count repositories and commits for each skill
-          const relevantRepos = repos.filter((repo: GitHubRepo) => {
+          const relevantRepos = data.repos.filter((repo: GitHubRepo) => {
             const repoName = repo.name.toLowerCase();
             const repoDescription = (repo.description || '').toLowerCase();
             const repoTopics = (repo.topics || []).map((t: string) => t.toLowerCase());
@@ -251,7 +207,7 @@ const About = () => {
           });
 
           // Calculate stats for this skill
-          const skillCommits = events.filter((event: GitHubEvent) => 
+          const skillCommits = data.events.filter((event: GitHubEvent) => 
             relevantRepos.some((repo: GitHubRepo) => repo.name === event.repo.name)
           ).length;
 
@@ -266,7 +222,7 @@ const About = () => {
             const repoFactor = Math.min(1, relevantRepos.length / 5);
             const starFactor = Math.min(1, skillStats.stars / 10);
             const commitFactor = Math.min(1, skillStats.commits / 50);
-            const contributionFactor = Math.min(1, totalContributions / 100);
+            const contributionFactor = Math.min(1, data.totalCommits / 100);
             
             level = Math.min(95, Math.max(70, 
               (repoFactor * 0.3 + 
@@ -280,13 +236,13 @@ const About = () => {
         });
 
         setSkills(updatedSkills);
-        console.log('GitHub data fetch completed successfully');
+        console.log('GitHub data processing completed successfully');
       } catch (error) {
         console.error('Error fetching GitHub stats:', error);
         
         // Set fallback values
         setGithubStats({
-          totalRepos: 15, // Reasonable fallback value
+          totalRepos: 15,
           totalStars: 25,
           totalCommits: 120
         });
@@ -294,7 +250,7 @@ const About = () => {
         // Set fallback skill levels
         const fallbackSkills = skills.map(skill => ({
           ...skill,
-          level: 80, // Reasonable fallback level
+          level: 80,
           stats: {
             repos: 5,
             stars: 8,
