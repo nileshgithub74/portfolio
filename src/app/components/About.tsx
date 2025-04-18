@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FaCode, FaServer, FaDatabase, FaLaptopCode, FaTools, FaRocket, FaGithub, FaStar, FaCodeBranch } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 // Add interfaces for GitHub API responses
 interface GitHubRepo {
@@ -85,8 +85,22 @@ const About = () => {
     totalStars: 0,
     totalCommits: 0
   });
+  
+  // Add a mounted state to prevent hydration errors
+  const [mounted, setMounted] = useState(false);
+  
+  // Add a ref to track if the effect has already run
+  const effectRan = useRef(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Skip if the effect has already run
+    if (effectRan.current) return;
+    effectRan.current = true;
+    
     const fetchGitHubStats = async () => {
       try {
         console.log('Starting GitHub data fetch...');
@@ -224,12 +238,57 @@ const About = () => {
             const commitFactor = Math.min(1, skillStats.commits / 50);
             const contributionFactor = Math.min(1, data.totalCommits / 100);
             
-            level = Math.min(95, Math.max(70, 
-              (repoFactor * 0.3 + 
-               starFactor * 0.2 + 
-               commitFactor * 0.3 + 
-               contributionFactor * 0.2) * 100
-            ));
+            // Different base levels for each skill category
+            let baseLevel = 70;
+            if (skill.title === "Frontend Development") {
+              baseLevel = 85;
+            } else if (skill.title === "Backend Development") {
+              baseLevel = 80;
+            } else if (skill.title === "DevOps & DSA") {
+              baseLevel = 75;
+            } else if (skill.title === "Programming") {
+              baseLevel = 90;
+            } else if (skill.title === "Database") {
+              baseLevel = 70;
+            } else if (skill.title === "Other Skills") {
+              baseLevel = 65;
+            }
+            
+            // Calculate weighted score with different weights for each skill
+            let weightedScore = 0;
+            if (skill.title === "Frontend Development") {
+              weightedScore = (repoFactor * 0.4 + starFactor * 0.3 + commitFactor * 0.2 + contributionFactor * 0.1) * 100;
+            } else if (skill.title === "Backend Development") {
+              weightedScore = (repoFactor * 0.3 + starFactor * 0.2 + commitFactor * 0.4 + contributionFactor * 0.1) * 100;
+            } else if (skill.title === "DevOps & DSA") {
+              weightedScore = (repoFactor * 0.2 + starFactor * 0.3 + commitFactor * 0.3 + contributionFactor * 0.2) * 100;
+            } else if (skill.title === "Programming") {
+              weightedScore = (repoFactor * 0.3 + starFactor * 0.2 + commitFactor * 0.3 + contributionFactor * 0.2) * 100;
+            } else if (skill.title === "Database") {
+              weightedScore = (repoFactor * 0.3 + starFactor * 0.2 + commitFactor * 0.3 + contributionFactor * 0.2) * 100;
+            } else if (skill.title === "Other Skills") {
+              weightedScore = (repoFactor * 0.2 + starFactor * 0.3 + commitFactor * 0.3 + contributionFactor * 0.2) * 100;
+            }
+            
+            // Calculate final level with base level and weighted score
+            level = Math.min(95, Math.max(60, baseLevel + (weightedScore * 0.2)));
+          } else {
+            // If no relevant repos found, set a minimum level based on skill type
+            if (skill.title === "Database") {
+              level = 65; // Minimum level for Database
+              skillStats = {
+                repos: 2,
+                stars: 3,
+                commits: 10
+              };
+            } else if (skill.title === "Other Skills") {
+              level = 60; // Minimum level for Other Skills
+              skillStats = {
+                repos: 2,
+                stars: 2,
+                commits: 8
+              };
+            }
           }
 
           return { ...skill, level, stats: skillStats };
@@ -248,24 +307,149 @@ const About = () => {
         });
         
         // Set fallback skill levels
-        const fallbackSkills = skills.map(skill => ({
-          ...skill,
-          level: 80,
-          stats: {
-            repos: 5,
-            stars: 8,
-            commits: 30
+        const fallbackSkills = skills.map(skill => {
+          let fallbackLevel = 80;
+          if (skill.title === "Frontend Development") {
+            fallbackLevel = 85;
+          } else if (skill.title === "Backend Development") {
+            fallbackLevel = 80;
+          } else if (skill.title === "DevOps & DSA") {
+            fallbackLevel = 75;
+          } else if (skill.title === "Programming") {
+            fallbackLevel = 90;
+          } else if (skill.title === "Database") {
+            fallbackLevel = 70;
+          } else if (skill.title === "Other Skills") {
+            fallbackLevel = 65;
           }
-        }));
+          
+          return {
+            ...skill,
+            level: fallbackLevel,
+            stats: {
+              repos: 5,
+              stars: 8,
+              commits: 30
+            }
+          };
+        });
         
         setSkills(fallbackSkills);
       }
     };
 
     fetchGitHubStats();
-  }, [skills]);
+  }, []); // Empty dependency array is now safe with the ref check
 
   const displayedSkills = showAll ? skills : skills.slice(0, 4);
+
+  // Only render the skills section when the component is mounted
+  const renderSkills = () => {
+    if (!mounted) {
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+          {skills.slice(0, 4).map((skill, index) => (
+            <div key={index} className="group relative flex flex-col gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl hover:bg-white/20 dark:hover:bg-gray-700/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 dark:from-teal-500/5 dark:to-indigo-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <div className="flex items-start gap-2 sm:gap-3">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 relative z-10">
+                  {skill.icon}
+                </div>
+                <div className="relative z-10">
+                  <h4 className="font-semibold text-sm sm:text-base text-gray-800 dark:text-white group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors duration-300">{skill.title}</h4>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5">{skill.description}</p>
+                </div>
+              </div>
+
+              <div className="mt-1 sm:mt-2">
+                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">
+                  <span>Proficiency</span>
+                  <span>Loading...</span>
+                </div>
+                <div className="w-full h-1 sm:h-1.5 md:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-full w-0 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-full"></div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2">
+                <span className="flex items-center gap-1">
+                  <FaGithub className="text-xs" />
+                  Loading...
+                </span>
+                <span className="flex items-center gap-1">
+                  <FaStar className="text-xs" />
+                  Loading...
+                </span>
+                <span className="flex items-center gap-1">
+                  <FaCodeBranch className="text-xs" />
+                  Loading...
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+        {displayedSkills.map((skill, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            viewport={{ once: true }}
+            className="group relative flex flex-col gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl hover:bg-white/20 dark:hover:bg-gray-700/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 dark:from-teal-500/5 dark:to-indigo-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            
+            <div className="flex items-start gap-2 sm:gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 relative z-10">
+                {skill.icon}
+              </div>
+              <div className="relative z-10">
+                <h4 className="font-semibold text-sm sm:text-base text-gray-800 dark:text-white group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors duration-300">{skill.title}</h4>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5">{skill.description}</p>
+              </div>
+            </div>
+
+            <div className="mt-1 sm:mt-2">
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">
+                <span>Proficiency</span>
+                <span>{skill.level}%</span>
+              </div>
+              <div className="w-full h-1 sm:h-1.5 md:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${skill.level}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: index * 0.1 }}
+                  className="h-full bg-gradient-to-r from-teal-500 to-indigo-500 rounded-full"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2">
+              <span className="flex items-center gap-1">
+                <FaGithub className="text-xs" />
+                {skill.stats?.repos || 0} repos
+              </span>
+              <span className="flex items-center gap-1">
+                <FaStar className="text-xs" />
+                {skill.stats?.stars || 0} stars
+              </span>
+              <span className="flex items-center gap-1">
+                <FaCodeBranch className="text-xs" />
+                {skill.stats?.commits || 0} commits
+              </span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <section id="about" className="relative">
@@ -390,74 +574,20 @@ const About = () => {
                 <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   <span className="flex items-center gap-1">
                     <FaGithub className="text-xs sm:text-sm" />
-                    {githubStats.totalRepos} Repos
+                    {mounted ? githubStats.totalRepos : 'Loading...'} Repos
                   </span>
                   <span className="flex items-center gap-1">
                     <FaStar className="text-xs sm:text-sm" />
-                    {githubStats.totalStars} Stars
+                    {mounted ? githubStats.totalStars : 'Loading...'} Stars
                   </span>
                   <span className="flex items-center gap-1">
                     <FaCodeBranch className="text-xs sm:text-sm" />
-                    {githubStats.totalCommits} Commits
+                    {mounted ? githubStats.totalCommits : 'Loading...'} Commits
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                {displayedSkills.map((skill, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="group relative flex flex-col gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl hover:bg-white/20 dark:hover:bg-gray-700/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg overflow-hidden"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 dark:from-teal-500/5 dark:to-indigo-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
-                    <div className="flex items-start gap-2 sm:gap-3">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 relative z-10">
-                        {skill.icon}
-                      </div>
-                      <div className="relative z-10">
-                        <h4 className="font-semibold text-sm sm:text-base text-gray-800 dark:text-white group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors duration-300">{skill.title}</h4>
-                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5">{skill.description}</p>
-                      </div>
-                    </div>
-
-                    <div className="mt-1 sm:mt-2">
-                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1">
-                        <span>Proficiency</span>
-                        <span>{skill.level}%</span>
-                      </div>
-                      <div className="w-full h-1 sm:h-1.5 md:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1, delay: index * 0.1 }}
-                          className="h-full bg-gradient-to-r from-teal-500 to-indigo-500 rounded-full"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2">
-                      <span className="flex items-center gap-1">
-                        <FaGithub className="text-xs" />
-                        {skill.stats?.repos || 0} repos
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <FaStar className="text-xs" />
-                        {skill.stats?.stars || 0} stars
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <FaCodeBranch className="text-xs" />
-                        {skill.stats?.commits || 0} commits
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              {renderSkills()}
 
               {skills.length > 4 && (
                 <motion.div
