@@ -46,14 +46,14 @@ const About = () => {
     { 
       icon: <FaServer className="text-xl" />, 
       title: "Backend Development", 
-      description: "Node.js, Express, Python, Django",
+      description: "Node.js, Express, Python",
       level: 0,
       stats: { repos: 0, stars: 0, commits: 0 }
     },
     { 
       icon: <FaTools className="text-xl" />, 
       title: "DevOps & DSA", 
-      description: "Docker, Kubernetes, AWS, Algorithms, Data Structures",
+      description: " AWS, Algorithms, Data Structures",
       level: 0,
       stats: { repos: 0, stars: 0, commits: 0 }
     },
@@ -67,14 +67,14 @@ const About = () => {
     { 
       icon: <FaDatabase className="text-xl" />, 
       title: "Database", 
-      description: "MongoDB, PostgreSQL, MySQL",
+      description: "MongoDB,  MySQL",
       level: 0,
       stats: { repos: 0, stars: 0, commits: 0 }
     },
     { 
       icon: <FaRocket className="text-xl" />, 
       title: "Other Skills", 
-      description: "Git, REST APIs, GraphQL, Testing",
+      description: "Git, REST APIs, Testing",
       level: 0,
       stats: { repos: 0, stars: 0, commits: 0 }
     }
