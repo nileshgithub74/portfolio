@@ -2,16 +2,39 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+
+  // Only show the UI after first mount to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // If not mounted, return a placeholder to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-white/70 dark:bg-gray-900/70 border-b border-gray-200/20 dark:border-gray-800/20 shadow-lg">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="flex items-center justify-center h-16 sm:h-20">
+              {/* Placeholder content */}
+            </div>
+          </div>
+        </nav>
+        <main className="pt-20">{children}</main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -92,82 +115,95 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-white/70 dark:bg-gray-900/70 border-b border-gray-200/20 dark:border-gray-800/20 shadow-lg">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-16 sm:h-20">
-            <Link href="/" className="text-lg sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 dark:hover:from-indigo-300 dark:hover:via-purple-300 dark:hover:to-pink-300 transition-all duration-300">
-              Nilesh
+          <div className="flex items-center justify-center h-16 sm:h-20">
+            <Link href="/" className="absolute left-4 sm:left-6 flex items-center text-lg sm:text-xl font-bold">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 mr-2 shadow-md">
+                <span className="text-white font-bold">N</span>
+              </div>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 dark:hover:from-indigo-300 dark:hover:via-purple-300 dark:hover:to-pink-300 transition-all duration-300">Nilesh</span>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full px-2 py-1 shadow-md">
               <Link
                 href="/#hero"
-                className={`relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 ${
-                  pathname === '/' ? 'text-indigo-500 dark:text-indigo-300' : ''
+                className={`relative text-base font-semibold px-5 py-2 rounded-full text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-300 transition-all duration-300 ${
+                  pathname === '/' ? 'text-indigo-600 dark:text-indigo-300 bg-white/80 dark:bg-gray-700/80 shadow-sm' : ''
                 }`}
                 scroll={true}
               >
                 Home
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-indigo-500 dark:bg-indigo-300 transform transition-transform duration-300 ${
-                  pathname === '/' ? 'scale-x-100' : 'scale-x-0'
-                }`} />
               </Link>
               <Link
                 href="/#about"
-                className="relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
+                className="relative text-base font-semibold px-5 py-2 rounded-full text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-300 transition-all duration-300"
                 scroll={true}
               >
                 About
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-500 dark:bg-indigo-300 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
               </Link>
               <Link
                 href="/#projects"
-                className="relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
+                className="relative text-base font-semibold px-5 py-2 rounded-full text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-300 transition-all duration-300"
                 scroll={true}
               >
                 Projects
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-500 dark:bg-indigo-300 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
               </Link>
               <Link
                 href="/#contact"
-                className="relative text-base font-medium px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 group"
+                className="relative text-base font-semibold px-5 py-2 rounded-full text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-300 transition-all duration-300"
                 scroll={true}
               >
                 Contact
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-500 dark:bg-indigo-300 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden text-gray-600 dark:text-gray-300 focus:outline-none hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors duration-300 p-2"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
-              <svg
-                className="w-5 h-5 sm:w-6 sm:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {/* Right Side Elements */}
+            <div className="absolute right-4 sm:right-6 flex items-center space-x-4">
+              {/* Social Links - Desktop */}
+              <div className="hidden md:flex items-center space-x-3">
+                <a href="https://github.com/nileshgithub74" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors duration-300">
+                  <FaGithub className="text-lg" />
+                </a>
+                <a href="https://linkedin.com/in/nilesh-kumar-74w" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors duration-300">
+                  <FaLinkedin className="text-lg" />
+                </a>
+                <a href="https://x.com/nileshkumar74" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors duration-300">
+                  <FaTwitter className="text-lg" />
+                </a>
+              </div>
+              
+              {/* Mobile Menu Button */}
+              <button
+                className="md:hidden text-gray-700 dark:text-gray-200 focus:outline-none hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors duration-300 p-2"
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
               >
-                {isMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </button>
+                <svg
+                  className="w-5 h-5 sm:w-6 sm:h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {isMenuOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
