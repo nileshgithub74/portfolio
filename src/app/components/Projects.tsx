@@ -43,33 +43,6 @@ const projects: Project[] = [
     link: 'https://phlrf-ayaaa-aaaai-atgjq-cai.icp0.io/',
     github: 'https://github.com/nileshgithub74/FearlessVoice-main',
     demo: 'https://phlrf-ayaaa-aaaai-atgjq-cai.icp0.io/'
-  },
-  {
-    title: 'Weather Dashboard',
-    description: 'A weather application with real-time data and 5-day forecast.',
-    image: '/projects/weather.jpg',
-    tags: ['React', 'OpenWeather API', 'Chart.js'],
-    link: '/projects/weather',
-    github: 'https://github.com/yourusername/weather-app',
-    demo: 'https://weather-demo.com'
-  },
-  {
-    title: 'Social Media Dashboard',
-    description: 'Analytics dashboard for social media platforms with data visualization.',
-    image: '/projects/social.jpg',
-    tags: ['React', 'D3.js', 'Express', 'PostgreSQL'],
-    link: '/projects/social-dashboard',
-    github: 'https://github.com/yourusername/social-dashboard',
-    demo: 'https://social-dashboard-demo.com'
-  },
-  {
-    title: 'Recipe Finder',
-    description: 'A recipe search application with filtering and favorite recipes feature.',
-    image: '/projects/recipe.jpg',
-    tags: ['Vue.js', 'Firebase', 'Spoonacular API'],
-    link: '/projects/recipe-finder',
-    github: 'https://github.com/yourusername/recipe-finder',
-    demo: 'https://recipe-finder-demo.com'
   }
 ];
 
