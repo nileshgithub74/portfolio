@@ -16,12 +16,12 @@ html, body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 85% !important;
+  font-size: 95% !important;
 }
 
 /* Add a specific rule for the entire document to ensure consistent font sizing */
 #__next, main, div[role="main"] {
-  font-size: 85% !important;
+  font-size: 100% !important;
 }
 
 /* Custom Scrollbar Styles */
