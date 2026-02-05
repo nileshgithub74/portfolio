@@ -1,0 +1,124 @@
+{
+  "personal": {
+    "name": "SONali",
+    "title": "Full Stack Developer",
+    "bio": "I'm a passionate Full Stack Developer with expertise in modern web technologies. I love creating innovative solutions and bringing ideas to life through code.",
+    "location": "India",
+    "email": "kumarnilesh843127@gmail.com",
+    "phone": "+91 8431277474",
+    "profileImage": "/images/profile.jpg",
+    "resumeUrl": "/resume.pdf"
+  },
+  "socialLinks": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/nileshgithub74",
+      "icon": "FaGithub",
+      "color": "hover:text-gray-800 dark:hover:text-gray-100"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://linkedin.com/in/nilesh-kumar-74w",
+      "icon": "FaLinkedin",
+      "color": "hover:text-blue-600 dark:hover:text-blue-400"
+    },
+    {
+      "platform": "Twitter",
+      "url": "https://x.com/nileshkumar74",
+      "icon": "FaTwitter",
+      "color": "hover:text-blue-400 dark:hover:text-blue-300"
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "title": "E-commerce Platform",
+      "description": "A full-stack e-commerce platform with user authentication, product management, and payment integration.",
+      "image": "/images/ecommerce.png",
+      "tags": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Stripe"
+      ],
+      "liveUrl": "https://ecommerce-react-2024-frontendss.vercel.app/",
+      "githubUrl": "https://github.com/nileshgithub74/Ecommerce-react-2024",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "title": "Video Conferencing App",
+      "description": "A collaborative task management application with real-time updates and team features.",
+      "image": "/images/vdieocallapp.png",
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "liveUrl": "https://stream-flow-gules.vercel.app/",
+      "githubUrl": "https://github.com/nileshgithub74/Backend-Project",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "FearlessVoice",
+      "description": "FearlessVoice is an anonymous whistleblowing platform built on the Internet Computer (ICP) blockchain to enable secure and private reporting of misconduct, corruption, harassment, and abuse.",
+      "image": "/images/fearlessvoice.png",
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "Motoko"
+      ],
+      "liveUrl": "https://phlrf-ayaaa-aaaai-atgjq-cai.icp0.io/",
+      "githubUrl": "https://github.com/nileshgithub74/FearlessVoice-main",
+      "featured": true
+    }
+  ],
+  "certificates": [
+    {
+      "id": 1,
+      "title": "Server side JavaScript with Node.js",
+      "issuer": "NIIT",
+      "date": "2024",
+      "description": "Explore the Node.js environment, test and debug the basic programs incorporating Node.js techniques like modules, files and asynchronous programming.",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/certificate/TNK6P8VWSUMM",
+      "icon": "FaCode"
+    },
+    {
+      "id": 2,
+      "title": "HTML, CSS, and Javascript for Web Developers",
+      "issuer": "Johns Hopkins University",
+      "date": "2024",
+      "description": "Frameworks for Web Development.",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/certificate/LRHRJ2SNNFD6",
+      "icon": "FaLaptopCode"
+    },
+    {
+      "id": 3,
+      "title": "Build AI Apps with ChatGPT, Dall-E, and GPT-4",
+      "issuer": "Scrimba",
+      "date": "2024",
+      "description": "How to build apps with the OpenAI API",
+      "certificateUrl": "https://www.coursera.org/account/accomplishments/certificate/UGRQWHLRY58D",
+      "icon": "FaRobot"
+    },
+    {
+      "id": 4,
+      "title": "Data Structure And Algorithm",
+      "issuer": "GeeksforGeeks",
+      "date": "2022",
+      "description": "Master data structure and algorithm",
+      "certificateUrl": "https://media.geeksforgeeks.org/courses/certificates/6e7bc1c14b337de2af1c0f4a49a5ef4f.pdf",
+      "icon": "FaCode"
+    },
+    {
+      "id": 5,
+      "title": "Learn JAVA Programming - Beginner to Master",
+      "issuer": "Udemy",
+      "date": "2023",
+      "description": "Learn JAVA programming - Beginner to Master",
+      "certificateUrl": "https://www.udemy.com/certificate/UC-174a9d37-08aa-42bf-825a-0005e06b42b5/",
+      "icon": "FaJava"
+    }
+  ]
+}
