@@ -12,40 +12,38 @@ import {
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { getPersonalInfo, getSocialLinks } from "@/lib/portfolioData";
 
-const socialLinks = [
-  {
-    icon: <FaGithub className="text-xl" />,
-    href: "https://github.com/nileshgithub74",
-    label: "GitHub",
-    color: "hover:text-gray-800 dark:hover:text-gray-100",
-    isEmail: false,
-  },
-  {
-    icon: <FaLinkedin className="text-xl" />,
-    href: "https://linkedin.com/in/nilesh-kumar-74w",
-    label: "LinkedIn",
-    color: "hover:text-blue-600 dark:hover:text-blue-400",
-    isEmail: false,
-  },
-  {
-    icon: <FaTwitter className="text-xl" />,
-    href: "https://x.com/nileshkumar74",
-    label: "Twitter",
-    color: "hover:text-blue-400 dark:hover:text-blue-300",
-    isEmail: false,
-  },
-  {
-    icon: <FaEnvelope className="text-xl" />,
-    href: "kumarnilesh843127@gmail.com",
-    label: "Email",
-    color: "hover:text-red-500 dark:hover:text-red-400",
-    isEmail: true,
-  },
-];
+const iconMap: Record<string, React.ReactElement> = {
+  FaGithub: <FaGithub className="text-xl" />,
+  FaLinkedin: <FaLinkedin className="text-xl" />,
+  FaTwitter: <FaTwitter className="text-xl" />,
+  FaEnvelope: <FaEnvelope className="text-xl" />,
+};
 
 const Hero = () => {
   const [emailCopied, setEmailCopied] = useState(false);
+  const personalInfo = getPersonalInfo();
+  const socialLinksData = getSocialLinks();
+
+  const socialLinks = socialLinksData.map(link => ({
+    icon: iconMap[link.icon] || <FaGithub className="text-xl" />,
+    href: link.url,
+    label: link.platform,
+    color: link.color,
+    isEmail: link.platform.toLowerCase() === 'email',
+  }));
+
+  // Add email if not in social links
+  if (!socialLinks.some(link => link.isEmail)) {
+    socialLinks.push({
+      icon: <FaEnvelope className="text-xl" />,
+      href: personalInfo.email,
+      label: "Email",
+      color: "hover:text-red-500 dark:hover:text-red-400",
+      isEmail: true,
+    });
+  }
 
   const handleEmailClick = (e: React.MouseEvent, email: string) => {
     e.preventDefault();
@@ -74,8 +72,8 @@ const Hero = () => {
             whileHover={{ scale: 1.05, rotate: 5 }}
           >
             <Image
-              src="/profile.jpg"
-              alt="Nilesh Kumar"
+              src={personalInfo.profileImage}
+              alt={personalInfo.name}
               width={128}
               height={128}
               className="object-cover"
@@ -104,7 +102,7 @@ const Hero = () => {
             >
               Hello, I am{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-indigo-600 to-purple-600 dark:from-teal-400 dark:via-indigo-400 dark:to-purple-400">
-                Nilesh Kumar
+                {personalInfo.name}
               </span>
             </motion.h1>
             <motion.h2
@@ -113,7 +111,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             >
-              Full Stack Developer
+              {personalInfo.title}
             </motion.h2>
 
             <div className="flex justify-center">
@@ -123,10 +121,7 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               >
-                Building high-quality, responsive, and user-friendly web
-                applications using modern technologies. I’m passionate about
-                solving real-world problems through clean, efficient code. Let’s
-                build something impactful together.
+                {personalInfo.bio}
               </motion.p>
             </div>
 
@@ -215,8 +210,8 @@ const Hero = () => {
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-700 via-purple-700 to-fuchsia-700 rounded-lg blur opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200" />
                 <a
-                  href="/cv.pdf"
-                  download="Nilesh_Kumar_CV.pdf"
+                  href={personalInfo.resumeUrl}
+                  download={`${personalInfo.name.replace(' ', '_')}_CV.pdf`}
                   className="relative px-6 py-3 w-full sm:w-auto bg-transparent border-2 border-violet-700/50 text-gray-800 dark:text-white rounded-lg hover:bg-violet-700/10 transition-all duration-300 flex items-center justify-center gap-2 font-medium tracking-wide"
                 >
                   <FaDownload className="text-lg" />

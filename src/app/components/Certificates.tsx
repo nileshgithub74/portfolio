@@ -4,58 +4,14 @@ import { motion } from 'framer-motion';
 import { FaLaptopCode, FaCode, FaJava, FaRobot } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getCertificates } from '@/lib/portfolioData';
 
-// Move certificates data to a separate file for better organization
-const certificates = [
-  {
-    title: 'Server side JavaScript with Node.js',
-    issuer: 'NIIT',
-    date: '2024',
-    description: 'Explore the Node.js environment , test and debug the basic programs incorporating Node.js techniques like modules, files and asynchronous programming.',
-    link: 'https://www.coursera.org/account/accomplishments/certificate/TNK6P8VWSUMM',
-    icon: <FaCode className="text-xl" />,
-  },
-  {
-    title: 'HTML, CSS, and Javascript for Web Developers',
-    issuer: 'Johns Hopkins University',
-    date: '2024',
-    description: ' Frameworks  for Web Development.',
-    link: 'https://www.coursera.org/account/accomplishments/certificate/LRHRJ2SNNFD6',
-    icon: <FaLaptopCode className="text-xl" />,
-  },
-  {
-    title: 'Build AI Apps with ChatGPT, Dall-E, and GPT-4',
-    issuer: 'Scrimba',
-    date: '2024',
-    description: 'How to build apps with the OpenAI API',
-    link: 'https://www.coursera.org/account/accomplishments/certificate/UGRQWHLRY58D',
-    icon: <FaRobot className="text-xl" />,
-  },
-  {
-    title: 'Data Structure And Algorithm.',
-    issuer: 'GeeksforGeeks',
-    date: '2022',
-    description: 'master data structure and alogrithm',
-    link: 'https://media.geeksforgeeks.org/courses/certificates/6e7bc1c14b337de2af1c0f4a49a5ef4f.pdf',
-    icon: <FaCode className="text-xl" />,
-  },
-  {
-    title: ' Learn JAVA Programming - Beginner to Master',
-    issuer: 'Udemy',
-    date: '2023',
-    description: ' Learn jAVA programming - Beginner to Master',
-    link: ' https://www.udemy.com/certificate/UC-174a9d37-08aa-42bf-825a-0005e06b42b5/',
-    icon: <FaJava className="text-xl" />,
-  },
-  {
-    title: 'ChatGPT Playground for Beginners: Intro to NLP AI',
-    issuer: 'Coursera Project Network',
-    date: '2023',
-    description: 'Work with the fundamental operations of ChatGPT, tokens, models, parameters, and influence the generated responses.',
-    link: 'https://www.coursera.org/account/accomplishments/certificate/DNAMC4RKBDDG',
-    icon: <FaRobot className="text-xl" />,
-  },
-];
+const iconMap: Record<string, React.ReactElement> = {
+  FaCode: <FaCode className="text-xl" />,
+  FaLaptopCode: <FaLaptopCode className="text-xl" />,
+  FaJava: <FaJava className="text-xl" />,
+  FaRobot: <FaRobot className="text-xl" />,
+};
 
 // Client-side only component to prevent hydration errors
 const ClientOnly = ({ children }: { children: React.ReactNode }) => {
@@ -74,7 +30,8 @@ const ClientOnly = ({ children }: { children: React.ReactNode }) => {
 
 const Certificates = () => {
   const [showAll, setShowAll] = useState(false);
-  const displayedCertificates = showAll ? certificates : certificates.slice(0, 4);
+  const certificatesData = getCertificates();
+  const displayedCertificates = showAll ? certificatesData : certificatesData.slice(0, 4);
 
   return (
     <section id="certificates" className="py-20 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -100,7 +57,7 @@ const Certificates = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {displayedCertificates.map((cert, index) => (
               <motion.div
-                key={index}
+                key={cert.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
@@ -109,7 +66,7 @@ const Certificates = () => {
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg">
-                    {cert.icon}
+                    {iconMap[cert.icon] || <FaCode className="text-xl" />}
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">{cert.title}</h3>
@@ -120,7 +77,7 @@ const Certificates = () => {
                     </div>
                     <p className="text-gray-700 dark:text-gray-300 mb-6">{cert.description}</p>
                     <Link
-                      href={cert.link}
+                      href={cert.certificateUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
@@ -146,7 +103,7 @@ const Certificates = () => {
             ))}
           </div>
 
-          {certificates.length > 4 && (
+          {certificatesData.length > 4 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

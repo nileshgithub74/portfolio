@@ -4,50 +4,11 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-
-// Project type definition
-interface Project {
-  title: string;
-  description: string;
-  image: string;
-  tags: string[];
-  link: string;
-  github?: string;
-  demo?: string;
-}
-
-const projects: Project[] = [
-  {
-    title: 'E-commerce Platform',
-    description: 'A full-stack e-commerce platform with user authentication, product management, and payment integration.',
-    image: '/images/ecommerce.png',
-    tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    link: 'https://ecommerce-react-2024-frontendss.vercel.app/',
-    github: 'https://github.com/nileshgithub74/Ecommerce-react-2024',
-    demo: 'https://ecommerce-react-2024-frontendss.vercel.app/'
-  },
-  {
-    title: 'Video Conferencing App ',
-    description: 'A collaborative task management application with real-time updates and team features.',
-    image: '/images/vdieocallapp.png',
-    tags: ['Next.js', 'Tyepscript', 'Tailwind CSS'],
-    link: 'https://stream-flow-gules.vercel.app/',
-    github: 'https://github.com/nileshgithub74/Backend-Project',
-    demo: 'https://stream-flow-gules.vercel.app/'
-  },
-  {
-    title: 'fearless-voice',
-    description: 'FearlessVoice is an anonymous whistleblowing platform built on the Internet Computer (ICP) blockchain to enable secure and private reporting of misconduct, corruption, harassment, and abuse. .',
-    image: '/images/fearlessvoice.png',
-    tags: ['Next.js', 'TypeScript', 'Motoko'],
-    link: 'https://phlrf-ayaaa-aaaai-atgjq-cai.icp0.io/',
-    github: 'https://github.com/nileshgithub74/FearlessVoice-main',
-    demo: 'https://phlrf-ayaaa-aaaai-atgjq-cai.icp0.io/'
-  }
-];
+import { getProjects } from '@/lib/portfolioData';
 
 const Projects = () => {
   const [showAll, setShowAll] = useState(false);
+  const projects = getProjects();
   const displayedProjects = showAll ? projects : projects.slice(0, 3);
 
   return (
@@ -76,7 +37,7 @@ const Projects = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedProjects.map((project, index) => (
             <motion.div
-              key={index}
+              key={project.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
@@ -160,7 +121,9 @@ const Projects = () => {
                     
                     <div className="flex gap-3">
                       <Link
-                        href={project.link}
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-indigo-600 dark:text-indigo-400 hover:from-indigo-600/30 hover:to-purple-600/30 dark:hover:from-indigo-400/30 dark:hover:to-purple-400/30 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md text-sm"
                       >
                         View Project
@@ -178,9 +141,9 @@ const Projects = () => {
                           />
                         </svg>
                       </Link>
-                      {project.github && (
+                      {project.githubUrl && (
                         <Link
-                          href={project.github}
+                          href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-gray-100/80 to-gray-200/80 dark:from-gray-700/80 dark:to-gray-600/80 text-gray-700 dark:text-gray-300 hover:from-gray-200/80 hover:to-gray-300/80 dark:hover:from-gray-600/80 dark:hover:to-gray-500/80 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md text-sm"
@@ -188,20 +151,6 @@ const Projects = () => {
                           GitHub
                           <svg className="w-3 h-3 ml-1.5" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                          </svg>
-                        </Link>
-                      )}
-                      {project.demo && (
-                        <Link
-                          href={project.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-gray-100/80 to-gray-200/80 dark:from-gray-700/80 dark:to-gray-600/80 text-gray-700 dark:text-gray-300 hover:from-gray-200/80 hover:to-gray-300/80 dark:hover:from-gray-600/80 dark:hover:to-gray-500/80 rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md text-sm"
-                        >
-                          Live Demo
-                          <svg className="w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                           </svg>
                         </Link>
                       )}
@@ -262,4 +211,4 @@ const Projects = () => {
   );
 };
 
-export default Projects; 
+export default Projects;
