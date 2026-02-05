@@ -339,7 +339,8 @@ const About = () => {
     };
 
     fetchGitHubStats();
-  }, []); // Empty dependency array is now safe with the ref check
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array is intentional - only run once on mount
 
   const displayedSkills = showAll ? skills : skills.slice(0, 4);
 
